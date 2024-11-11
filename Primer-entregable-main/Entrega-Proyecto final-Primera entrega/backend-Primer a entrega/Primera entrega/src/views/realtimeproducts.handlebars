@@ -6,18 +6,21 @@
 <h2> Formulario para agregar productos </h2>
 
 <form>
-    <input type="text" id="title" placeholder="Titulo">
-    <input type="text" id="description" placeholder="Descripción">
-    <input type="number" id="price" placeholder="Precio">
-    <input type="text" id="img" value="Sin imagen">
-    <input type="text" id="code" placeholder="Código">
-    <input type="number" id="stock" placeholder="Stock">
-    <input type="text" id="category" placeholder="Categoria">
-    <select id="status">
-        <option value="true"> Activo </option>
-        <option value="false"> Inactivo </option>
+    <input type="text" id="title" placeholder="Titulo" required>
+    <input type="text" id="description" placeholder="Descripción" required>
+    <input type="number" id="price" placeholder="Precio" required>
+    <input type="text" id="img" placeholder="Imagen" value="Sin imagen">
+    <input type="text" id="code" placeholder="Código" required>
+    <input type="number" id="stock" placeholder="Stock" required>
+    <input type="text" id="category" placeholder="Categoría" required>
+    <input type="text" id="thumbnail" placeholder="Thumbnail (URL de imagen)" required>
+    
+    <select id="status" required>
+        <option value="true">Activo</option>
+        <option value="false">Inactivo</option>
     </select>
-    <button type="button" id="btnEnviar"> Enviar </button>
+    
+    <button type="button" id="btnEnviar">Enviar</button>
 </form>
 
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>

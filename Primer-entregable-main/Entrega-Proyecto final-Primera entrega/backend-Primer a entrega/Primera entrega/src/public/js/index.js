@@ -1,56 +1,60 @@
-const socket = io(); 
-//La instancia de Socket.io del lado del cliente. 
+const socket = io(); // Conexión a WebSocket
 
+socket.on("productos", (productos) => {
+    renderProductos(productos); // Renderiza la lista de productos
+});
 
-//Lo que tengo que hacer es escuchar al Backend, que este me va a mandar los productos: 
-
-socket.on("productos", (data) => {
-    renderProductos(data);
-})
-
-// Función para renderizar nuestros productos
-
+// Función para renderizar los productos
 const renderProductos = (productos) => {
-    const contenedorProductos = document.getElementById("contenedorProductos"); 
-    contenedorProductos.innerHTML ="";
+    const contenedorProductos = document.getElementById("contenedorProductos");
+    contenedorProductos.innerHTML = ""; 
 
-    productos.forEach( item => {
-        const card = document.createElement("div"); 
-        card.classList.add("card"); 
-
+    productos.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        
+        // Mostramos solo el título, precio y el botón de eliminar
         card.innerHTML = `
-                            <p> ${item.id} </p>
-                            <p> ${item.title} </p>
-                            <p> ${item.price} </p>
-                            <button> Eliminar </button>
-                         `
+            <p><strong>Título:</strong> ${item.title}</p>
+            <p><strong>Precio:</strong> $${item.price}</p>
+            <button class="btnEliminar" data-id="${item._id}">Eliminar</button>
+        `;
         contenedorProductos.appendChild(card);
-        //Evento para eliminar productos: 
-        card.querySelector("button").addEventListener("click", () => {
-            eliminarProductos(item.id); 
-        })
-    })
+
+        // Evento para eliminar el producto
+        card.querySelector(".btnEliminar").addEventListener("click", () => {
+            eliminarProducto(item._id); 
+        });
+    });
 }
 
-const eliminarProductos = (id) => {
-    socket.emit("eliminarProducto", id);
+// Función para eliminar un producto
+const eliminarProducto = (id) => {
+    socket.emit("eliminarProducto", id); // id del producto a eliminar
 }
 
-//Agregamos productos del formulario: 
+// Agg desde el formulario
 document.getElementById("btnEnviar").addEventListener("click", () => {
     agregarProducto(); 
-})
+});
 
 const agregarProducto = () => {
     const producto = {
         title: document.getElementById("title").value,
         description: document.getElementById("description").value,
-        price: document.getElementById("price").value,
+        price: parseFloat(document.getElementById("price").value),
         img: document.getElementById("img").value,
         code: document.getElementById("code").value,
-        stock: document.getElementById("stock").value,
+        stock: parseInt(document.getElementById("stock").value),
         category: document.getElementById("category").value,
         status: document.getElementById("status").value === "true",
+        thumbnail: document.getElementById("thumbnail").value,
+    };
+
+    if (producto.stock < 0 || producto.price < 0) {
+        alert("El stock o precio no pueden ser negativos.");
+        return;
     }
-    socket.emit("agregarProducto", producto); 
+
+    socket.emit("agregarProducto", producto); // agg el producto
 }

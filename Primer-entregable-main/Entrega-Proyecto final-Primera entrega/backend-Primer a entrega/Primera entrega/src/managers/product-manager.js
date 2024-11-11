@@ -20,41 +20,46 @@ class ProductManager {
         }
     }
 
-    async addProduct({ title, description, price, img, code, stock }) {
+    async addProduct({ title, description, price, img, code, stock, category, status, thumbnail }) {
 
-        if (!title || !description || !price || !img || !code || !stock) {
+        if (!title || !description || !price || !img || !code || !stock || !category || status === undefined) {
             console.log("Todos los campos son obligatorios");
             return;
         }
-
-        //2) Validacion: 
-
-        if (this.products.some(item => item.code === code)) {
-            console.log("El codigo debe ser unico.. o todos moriremos");
+    
+        // 2) Validación: El precio y el stock no pueden ser negativos
+        if (price <= 0 || stock < 0) {
+            console.log("El precio debe ser mayor a cero y el stock no puede ser negativo");
             return;
         }
-
+    
+        // 3) El código debe ser único
+        if (this.products.some(item => item.code === code)) {
+            console.log("El código debe ser único");
+            return;
+        }
+    
+        // 4) Crear el nuevo producto
         const lastProductId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
         const nuevoProducto = {
             id: lastProductId + 1,
             title,
             description,
-            thumbnail,
-            status,
-            category,
-            price,
+            price: parseFloat(price),  
             img,
             code,
-            stock
+            stock: parseInt(stock),  
+            category,
+            status: status === "true", 
+            thumbnail: thumbnail || "default-thumbnail.jpg", 
         };
-
-        //4) Metemos el producto al array. 
+    
+        // 5) Agregar el nuevo producto al array
         this.products.push(nuevoProducto);
-
-        //5) Lo guardamos en el archivo: 
+    
         await this.guardarArchivo(this.products);
     }
-
+    
     async getProducts() {
         try {
             const arrayProductos = await this.leerArchivo(); 
@@ -82,7 +87,6 @@ class ProductManager {
         }
     }
 
-    //Métodos auxiliares: 
     async leerArchivo() {
         const respuesta = await fs.promises.readFile(this.path, "utf-8");
         const arrayProductos = JSON.parse(respuesta);
@@ -93,7 +97,6 @@ class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(arrayProductos, null, 2));
     }
 
-    //Método para actualizar productos: 
 
     async updateProduct(id, productoActualizado) {
         try {

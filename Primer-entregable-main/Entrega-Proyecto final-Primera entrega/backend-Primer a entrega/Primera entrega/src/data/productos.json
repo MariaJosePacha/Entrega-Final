@@ -22,28 +22,6 @@
     "stock": 20
   },
   {
-    "id": 4,
-    "title": "Aceite",
-    "description": "Lafavorita",
-    "price": 3,
-    "thumbnail": "https://www.supermercadosantamaria.com/documents/10180/10504/27202_G.jpg",
-    "status": true,
-    "category": "alimentos",
-    "code": "jkl012",
-    "stock": 15
-  },
-  {
-    "id": 5,
-    "title": "Margarina",
-    "description": "Lafavorita",
-    "thumbnail": "https://www.supermercadosantamaria.com/documents/10180/10504/163453987_G.jpg",
-    "status": true,
-    "category": "alimentos",
-    "price": 2,
-    "code": "mno345",
-    "stock": 40
-  },
-  {
     "id": 6,
     "title": "Achiote",
     "description": "Lafavorita",
@@ -97,5 +75,53 @@
     "price": 1,
     "code": "aaa558",
     "stock": 300
+  },
+  {
+    "id": 12,
+    "title": "Aceite",
+    "description": "santamaria",
+    "price": 5,
+    "img": "Sin imagen",
+    "code": "sds",
+    "stock": 2,
+    "category": "Galleta",
+    "status": false,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFphAkDFOVnZ8XVrRdRSI06CimvzpTZED2Q&s"
+  },
+  {
+    "id": 13,
+    "title": "Aceite",
+    "description": "santamartra",
+    "price": 5,
+    "img": "Sin imagen",
+    "code": "234",
+    "stock": 2,
+    "category": "Galleta",
+    "status": false,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFphAkDFOVnZ8XVrRdRSI06CimvzpTZED2Q&s"
+  },
+  {
+    "id": 14,
+    "title": "Aceite",
+    "description": "Pacha",
+    "price": 5,
+    "img": "Sin imagen",
+    "code": "526",
+    "stock": 2,
+    "category": "Galleta",
+    "status": false,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFphAkDFOVnZ8XVrRdRSI06CimvzpTZED2Q&s"
+  },
+  {
+    "id": 15,
+    "title": "Papel",
+    "description": "Pacha",
+    "price": 5,
+    "img": "Sin imagen",
+    "code": "324",
+    "stock": 2,
+    "category": "Galleta",
+    "status": false,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNFphAkDFOVnZ8XVrRdRSI06CimvzpTZED2Q&s"
   }
 ]

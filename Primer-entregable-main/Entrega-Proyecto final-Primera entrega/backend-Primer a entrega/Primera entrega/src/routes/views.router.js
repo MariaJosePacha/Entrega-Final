@@ -1,26 +1,62 @@
 import { Router } from "express";
+import ProductModel from "../models/product.model.js";
+import CartModel from "../models/cart.model.js";
+
 const router = Router();
 
-// 1) Crear una vista "home.handlebars" la cual contenga una lista de todos los productos agregados hasta el momento
+// Ruta para ver todos los productos con paginación
+router.get("/products", async (req, res) => {
+    const { page = 1, limit = 10 } = req.query; // Por defecto: página 1 CON 10 productos por página
 
-//buscamos importar al product manager y 
-import ProductManager from "../managers/product-manager.js";
-const manager = new ProductManager("./src/data/productos.json");
-router.get("/products", async(req, res) =>{
-    const productos = await manager.getProducts();
+    try {
+       
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            lean: true 
+        };
+        
+        const result = await ProductModel.paginate({}, options); 
 
-    // se recuperan los productos del Json y se los envia a la lista "home"
-    res.render("home", {productos}); 
-    // se renderiza la vista "home" y al mismo tiempo se envia un array con todos los productos del inventario 
-    
+        res.render("home", {
+            productos: result.docs,
+            page: result.page,
+            totalPages: result.totalPages,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            limit
+        });
+    } catch (error) {
+        console.error("Error al obtener productos con paginación:", error);
+        res.status(500).send("Error al obtener los productos");
+    }
+});
 
+// Ruta para ver los detalles de un carrito específico
+router.get("/carts/:cid", async (req, res) => {
+    const cartId = req.params.cid;
 
-})
+    try {
+        // Encuentra el carrito por ID y se hace `populate` para obtener detalles
+        const cart = await CartModel.findById(cartId).populate("products.product").lean();
 
-router.get("/realtimeproducts", async(req, res)=>{
+        if (!cart) {
+            return res.status(404).send("Carrito no encontrado");
+        }
+
+        res.render("cart", { cart });
+    } catch (error) {
+        console.error("Error al obtener el carrito:", error);
+        res.status(500).send("Error al obtener el carrito");
+    }
+});
+
+// Vista en tiempo real con WebSockets
+router.get("/realtimeproducts", async (req, res) => {
     res.render("realtimeproducts");
-})
-// Además, crear una vista “realTimeProducts.handlebars”, la cual estará en la ruta “/realtimeproducts” en nuestro views router, ésta contendrá la misma lista de productos, sin embargo, ésta trabajará sólo con websockets.
+});
 
-export default router; 
+export default router;
 
